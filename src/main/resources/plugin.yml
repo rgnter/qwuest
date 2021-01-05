@@ -1,0 +1,8 @@
+name: Qwuest
+version: ${version}
+main: xyz.rgnt.qwuest.QwuestPlugin
+api-version: 1.16
+
+description: "Plugin for quests."
+author: rgnt
+website: https://rgnt.xyz

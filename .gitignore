@@ -1,0 +1,8 @@
+# IntelliJ Jetbrains
+.idea/
+target/
+*.iml
+
+
+# mvn
+dependency-reduced-pom.xml
