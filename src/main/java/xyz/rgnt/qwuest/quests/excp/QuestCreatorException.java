@@ -2,8 +2,8 @@ package xyz.rgnt.qwuest.quests.excp;
 
 import org.jetbrains.annotations.NotNull;
 
-public class ParseFailedException extends Exception {
-    public ParseFailedException(@NotNull String message) {
+public class QuestCreatorException extends Exception {
+    public QuestCreatorException(@NotNull String message) {
         super(message);
     }
 }

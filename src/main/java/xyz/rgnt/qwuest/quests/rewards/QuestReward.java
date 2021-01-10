@@ -1,19 +1,19 @@
 package xyz.rgnt.qwuest.quests.rewards;
 
-import lombok.AccessLevel;
-import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import xyz.rgnt.qwuest.quests.Quest;
+import xyz.rgnt.qwuest.quests.shared.SharedQuestPart;
 
 /**
  * AReward is abstract class representing single-reward that can be redeemed by player.
  */
-public abstract class AReward {
+public abstract class QuestReward extends SharedQuestPart {
 
 
-    @Getter(AccessLevel.PROTECTED)
-    private Quest quest;
+    public QuestReward(@NotNull Quest quest, @NotNull String identifier) {
+        super(quest, identifier);
+    }
 
     /**
      * Redeems reward to player
@@ -21,7 +21,11 @@ public abstract class AReward {
      */
     public abstract void redeem(@NotNull Player player);
 
-    public static interface Factory<T extends AReward> {
-        @NotNull AReward produce(@NotNull Object ... data);
+    /**
+     * Factory
+     * @param <T> Goal type
+     */
+    public static interface Factory<T extends QuestReward> extends SharedQuestPart.Factory<T> {
     }
+
 }

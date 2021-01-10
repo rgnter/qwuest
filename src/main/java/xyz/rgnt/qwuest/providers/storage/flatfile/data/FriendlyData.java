@@ -407,6 +407,13 @@ public abstract class FriendlyData {
     public abstract @NotNull Set<String> getKeys(@NotNull String path);
 
     /**
+     * Gets all children of root path.
+     *
+     * @return List of all children.
+     */
+    public abstract @NotNull Set<String> getKeys();
+
+    /**
      * Checks if child is set
      *
      * @param path Path to child. Path is delimited with dots('.'). <br>Example: <code>parent0.parent1.child</code>
@@ -731,6 +738,15 @@ public abstract class FriendlyData {
         }
 
         @Override
+        public @NotNull Set<String> getKeys() {
+            Set<String> keys = new HashSet<>();
+            for (Map.Entry<String, JsonElement> entry : jsonData.entrySet()) {
+                keys.add(entry.getKey());
+            }
+            return keys;
+        }
+
+        @Override
         public boolean isSet(@NotNull String path) {
             return getJsonElement(path) != null;
         }
@@ -954,6 +970,11 @@ public abstract class FriendlyData {
                 return Collections.emptySet();
 
             return section.getKeys(false);
+        }
+
+        @Override
+        public @NotNull Set<String> getKeys() {
+            return yamlData.getKeys(false);
         }
 
         @Override

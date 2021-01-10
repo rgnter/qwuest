@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import xyz.rgnt.qwuest.api.QwuestAPI;
 import xyz.rgnt.qwuest.diagnostics.timings.Timer;
+import xyz.rgnt.qwuest.providers.statics.ProgressStatics;
 import xyz.rgnt.qwuest.providers.storage.flatfile.StorageProvider;
 
 @Log4j2
@@ -47,6 +48,8 @@ public class QwuestPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         super.onEnable();
+        System.out.println(ProgressStatics.getProgressBar(64, 128));
+        System.out.println(ProgressStatics.getProgressBar(2, 10));
 
         timer.start();
         log.info("Initializing...");

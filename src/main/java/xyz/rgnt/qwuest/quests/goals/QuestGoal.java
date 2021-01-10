@@ -1,31 +1,19 @@
 package xyz.rgnt.qwuest.quests.goals;
 
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import xyz.rgnt.qwuest.api.QwuestAPI;
-import xyz.rgnt.qwuest.providers.storage.flatfile.data.FriendlyData;
 import xyz.rgnt.qwuest.quests.Quest;
-import xyz.rgnt.qwuest.quests.excp.ParseFailedException;
+import xyz.rgnt.qwuest.quests.shared.SharedQuestPart;
 
 /**
  * AGoal is abstract class representing single-goal that player can accomplish
  */
-public abstract class AGoal implements Listener {
-
-    /**
-     * TODO: Implement goal debugging
-     *                 - event timings
-     *                 - call counter
-     *
-     */
-
-    @Getter(AccessLevel.PROTECTED)
-    private Quest quest;
+public abstract class QuestGoal extends SharedQuestPart implements Listener {
 
     @Setter(AccessLevel.PROTECTED)
     private int progressMin = 0, progressMax = 100;
@@ -42,8 +30,8 @@ public abstract class AGoal implements Listener {
     private double difficultyMod = 1.0d;
 
 
-    public AGoal(@NotNull Quest quest) {
-        this.quest = quest;
+    public QuestGoal(@NotNull Quest quest, @NotNull String identifier) {
+        super(quest, identifier);
     }
 
     /**
@@ -99,10 +87,8 @@ public abstract class AGoal implements Listener {
      * Factory
      * @param <T> Goal type
      */
-    public static interface Factory<T extends AGoal> {
-        @NotNull T produce(@NotNull T goal, @NotNull FriendlyData data) throws ParseFailedException;
+    public static interface Factory<T extends QuestGoal> extends SharedQuestPart.Factory<T> {
     }
-
 
 
 }

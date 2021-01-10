@@ -6,8 +6,12 @@ import lombok.extern.log4j.Log4j2;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import xyz.rgnt.qwuest.providers.storage.flatfile.data.FriendlyData;
-import xyz.rgnt.qwuest.quests.goals.GoalRepo;
-import xyz.rgnt.qwuest.quests.goals.impl.GoalKillMobs;
+import xyz.rgnt.qwuest.quests.Quest;
+import xyz.rgnt.qwuest.quests.QuestRepo;
+import xyz.rgnt.qwuest.quests.excp.QuestCreatorException;
+import xyz.rgnt.qwuest.quests.goals.impl.GoalKillMob;
+
+import java.util.UUID;
 
 @Log4j2
 public class QuestManager {
@@ -37,11 +41,10 @@ public class QuestManager {
      * Initializes quest manager
      */
     public void initialize() {
-        GoalRepo.registerGoal(GoalKillMobs.class, new GoalKillMobs.Factory());
+        QuestRepo.registerGoal(GoalKillMob.class, new GoalKillMob.Factory());
 
         try {
             try {
-                System.out.println(getPlugin().getResource("resources/configs/daily-quests.yml") != null);
                 this.dailyQuestSettings = getPlugin().getStorageProvider().provideYaml("resources", "configs/daily-quests.yml", true).getData();
                 log.info("Loaded settings for §aRegular Quests");
             } catch (Exception x) {
@@ -71,13 +74,19 @@ public class QuestManager {
         } catch (Exception x) {
             log.error("Couldn't initialize §cUniqueQuestManager", x);
         }
+
+        try {
+            Quest.Creator creator = Quest.Creator.createQuest("test0", UUID.randomUUID()).withGoal("goal0", GoalKillMob.class, FriendlyData.fromEmptyYaml());
+        } catch (QuestCreatorException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        }
     }
 
     /**
      * Terminates quest manager
      */
     public void terminate() {
-        System.out.println((GoalRepo.getGoals().size()));
         try {
             this.dailyQuests.terminate();
             log.info("Terminated §aRegular Quests");
