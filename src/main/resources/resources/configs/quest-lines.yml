@@ -1,0 +1,46 @@
+#
+#
+#   ██████╗ ██╗   ██╗███████╗███████╗████████╗    ██╗     ██╗███╗   ██╗███████╗███████╗
+#  ██╔═══██╗██║   ██║██╔════╝██╔════╝╚══██╔══╝    ██║     ██║████╗  ██║██╔════╝██╔════╝
+#  ██║   ██║██║   ██║█████╗  ███████╗   ██║       ██║     ██║██╔██╗ ██║█████╗  ███████╗
+#  ██║▄▄ ██║██║   ██║██╔══╝  ╚════██║   ██║       ██║     ██║██║╚██╗██║██╔══╝  ╚════██║
+#  ╚██████╔╝╚██████╔╝███████╗███████║   ██║       ███████╗██║██║ ╚████║███████╗███████║
+#   ╚══▀▀═╝  ╚═════╝ ╚══════╝╚══════╝   ╚═╝       ╚══════╝╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝
+#
+# Build time: ${maven.build.timestamp}
+# Plugin ver: ${artifactId}-${version}
+#
+#
+
+trails:
+  0:
+    name: "Trail0"
+    quests:
+      quest-0:
+        goals:
+          goal0:
+            type: killmobs
+            data: '{amount:10,target:"zombie"}'
+          goal1:
+            type: killmobs
+            data: '{amount:5,target:"skeleton"}'
+        rewards:
+          reward0:
+            type: cookies
+            data: '{"amount":"10"}'
+          reward1:
+            type: tokens
+            data: '{"amount":"10","useModifier":"false"}'
+  1:
+    name: "Trail0"
+    quests:
+      quest-0:
+        goals:
+          goal0:
+            type: destroyblocks
+            data: '{amount:10,target:"stone"}'
+        rewards:
+          reward1:
+            type: tokens
+            data: '{"amount":"10"}'
+

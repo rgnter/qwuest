@@ -1,0 +1,21 @@
+general:
+  missing-permission: "&a&lDailyQuests &8➥ &fNope. You can't do that."
+
+dailyquests:
+  quests:
+    gui-quest-not-done: "&fDenný quest nesplnený"
+    gui-quest-done: "&aDenný quest splnený"
+    annouce-quest-done: "&a&lDailyQuests &8➥ &fSplnil si denný quest!"
+
+  goal:
+    gui-goal-not-done: "&cGoal nie je splnený"
+    gui-goal-done: "&aGoal je splnený"
+    annouce-goal-done: "&a&lDailyQuests &8➥ &fSplnil si jeden z goalov tvojho denného questu!"
+
+  reward:
+    gui-reward-not-rewarded: "&cOdmená nevyzdvihnutá"
+    gui-goal-done: "&aOdmená vyzdvihnutá"
+    annouce-goal-done: "&a&lDailyQuests &8➥ &fSplnil si jeden z goalov tvojho denného questu!"
+
+questlines:
+  todo: ":("

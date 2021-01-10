@@ -1,8 +1,7 @@
-package eu.realmcompany.regna.providers.database;
-
-import eu.realmcompany.regna.RegnaKaryon;
+package xyz.rgnt.qwuest.providers.storage.database;
 
 public class DatabaseProvider {
-    public DatabaseProvider(RegnaKaryon regnaKaryon) {
-    }
+
+
+
 }

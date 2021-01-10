@@ -4,15 +4,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
 import lombok.Getter;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.craftbukkit.libs.org.apache.commons.io.FilenameUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import xyz.rgnt.qwuest.providers.storage.flatfile.data.FriendlyData;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
@@ -23,8 +23,13 @@ public abstract class AStore {
 
     @Getter
     protected File file;
+
     @Getter
-    protected @NotNull String path;
+    private @NotNull
+    final String root;
+    @Getter
+    private @NotNull
+    final String path;
 
     @Getter
     protected boolean hasDefault;
@@ -36,9 +41,10 @@ public abstract class AStore {
      * @param path       Relative path to file
      * @param hasDefault Default
      */
-    public AStore(@NotNull JavaPlugin instance, @NotNull String path, boolean hasDefault) {
+    public AStore(@NotNull JavaPlugin instance, @Nullable String root, @NotNull String path, boolean hasDefault) {
         this.instance = instance;
-        this.path = path;
+        this.root = root != null ? root : "";
+        this.path = FilenameUtils.separatorsToUnix(path);
         this.hasDefault = hasDefault;
     }
 
@@ -96,10 +102,12 @@ public abstract class AStore {
      */
     public void provideDefault() throws Exception {
         if (hasDefault) {
-            if(!file.exists())
+            if (!file.exists())
                 create();
             // write default file
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(instance.getResource(path)), StandardCharsets.UTF_8));
+            try (BufferedReader reader =
+                         new BufferedReader(new InputStreamReader(Objects.requireNonNull(instance.getResource(getResourcePath())),
+                                 StandardCharsets.UTF_8));
                  BufferedWriter writer = new BufferedWriter(new FileWriter(this.file, StandardCharsets.UTF_8))) {
 
                 String line;
@@ -109,10 +117,14 @@ public abstract class AStore {
                         writer.write(line + "\n");
                 } while (line != null);
             } catch (Exception x) {
-                throw new Exception("Failed to load '" + path + "': " + x.getMessage(), x);
+                throw new Exception("Failed to load '" + getResourcePath() + "': " + x.getMessage(), x);
             }
             load();
         }
+    }
+
+    public @NotNull String getResourcePath() {
+        return root + "/" + path;
     }
 
     /**
@@ -121,12 +133,12 @@ public abstract class AStore {
     public abstract @NotNull FriendlyData getData();
 
 
-    public static @NotNull AStore makeYaml(@NotNull JavaPlugin plugin, @NotNull String path, boolean hasDefault) {
-        return new YamlImpl(plugin, path, hasDefault);
+    public static @NotNull AStore makeYaml(@NotNull JavaPlugin plugin, @Nullable String root, @NotNull String path, boolean hasDefault) {
+        return new YamlImpl(plugin, root, path, hasDefault);
     }
 
-    public static @NotNull AStore makeJson(@NotNull JavaPlugin plugin, @NotNull String path, boolean hasDefault) {
-        return new JsonImpl(plugin, path, hasDefault);
+    public static @NotNull AStore makeJson(@NotNull JavaPlugin plugin, @Nullable String root, @NotNull String path, boolean hasDefault) {
+        return new JsonImpl(plugin, root, path, hasDefault);
     }
 
     /**
@@ -137,8 +149,8 @@ public abstract class AStore {
         private FriendlyData data;
         private JsonObject jsonData;
 
-        public JsonImpl(@NotNull JavaPlugin instance, @NotNull String path, boolean hasDefault) {
-            super(instance, path, hasDefault);
+        public JsonImpl(@NotNull JavaPlugin instance, @Nullable String root, @NotNull String path, boolean hasDefault) {
+            super(instance, root, path, hasDefault);
 
             this.file = new File(instance.getDataFolder(), path);
         }
@@ -149,7 +161,7 @@ public abstract class AStore {
                 this.jsonData = new JsonParser().parse(reader).getAsJsonObject();
                 this.data = FriendlyData.fromJson(this.jsonData);
             } catch (Exception x) {
-                throw new Exception("Failed to load '" + path + "': " + x.getMessage(), x);
+                throw new Exception("Failed to load '" + getResourcePath() + "': " + x.getMessage(), x);
             }
         }
 
@@ -164,19 +176,19 @@ public abstract class AStore {
                 writer.write(serialized);
 
             } catch (Exception x) {
-                throw new Exception("Failed to load '" + path + "': " + x.getMessage(), x);
+                throw new Exception("Failed to load '" + getResourcePath() + "': " + x.getMessage(), x);
             }
         }
 
         @Override
         public void provideDefault() throws Exception {
             if (hasDefault) {
-                try (Reader reader = new InputStreamReader(Objects.requireNonNull(instance.getResource(path)))) {
+                try (Reader reader = new InputStreamReader(Objects.requireNonNull(instance.getResource(getResourcePath())))) {
                     this.jsonData = new JsonParser().parse(reader).getAsJsonObject();
                     this.data = FriendlyData.fromJson(this.jsonData);
                     save();
                 } catch (Exception x) {
-                    throw new Exception("Failed to load '" + path + "': " + x.getMessage(), x);
+                    throw new Exception("Failed to load '" + getResourcePath() + "': " + x.getMessage(), x);
                 }
             }
         }
@@ -195,8 +207,8 @@ public abstract class AStore {
         private FriendlyData data;
         private YamlConfiguration yamlData;
 
-        public YamlImpl(@NotNull JavaPlugin instance, @NotNull String path, boolean hasDefault) {
-            super(instance, path, hasDefault);
+        public YamlImpl(@NotNull JavaPlugin instance, @Nullable String root, @NotNull String path, boolean hasDefault) {
+            super(instance, root, path, hasDefault);
 
             this.file = new File(instance.getDataFolder(), path);
         }
@@ -209,7 +221,7 @@ public abstract class AStore {
 
                 this.data = FriendlyData.fromYaml(this.yamlData);
             } catch (Exception x) {
-                throw new Exception("Failed to load '" + path + "': " + x.getMessage(), x);
+                throw new Exception("Failed to load '" + getResourcePath() + "': " + x.getMessage(), x);
             }
         }
 

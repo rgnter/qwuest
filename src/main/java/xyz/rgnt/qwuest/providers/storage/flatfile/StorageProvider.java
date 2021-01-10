@@ -25,8 +25,8 @@ public class StorageProvider {
      * @return YAML Store
      * @throws Exception When something goes wrong
      */
-    public @NotNull AStore provideYaml(@NotNull String path, boolean hasDefault) throws Exception {
-        return AStore.makeYaml(this.instance, path, hasDefault).prepare();
+    public @NotNull AStore provideYaml(@Nullable String root, @NotNull String path, boolean hasDefault) throws Exception {
+        return AStore.makeYaml(this.instance, root, path, hasDefault).prepare();
     }
 
 
@@ -37,8 +37,8 @@ public class StorageProvider {
      * @return YAML Store
      * @throws Exception When something goes wrong
      */
-    public @NotNull AStore provideJson(@NotNull String path, boolean hasDefault) throws Exception {
-        return AStore.makeJson(this.instance, path, hasDefault).prepare();
+    public @NotNull AStore provideJson(@Nullable String root, @NotNull String path, boolean hasDefault) throws Exception {
+        return AStore.makeJson(this.instance, root, path, hasDefault).prepare();
     }
 
 

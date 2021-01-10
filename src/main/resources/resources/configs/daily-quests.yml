@@ -1,0 +1,73 @@
+#
+#
+#  ██████╗  █████╗ ██╗██╗  ██╗   ██╗     ██████╗ ██╗   ██╗███████╗███████╗████████╗███████╗
+#  ██╔══██╗██╔══██╗██║██║  ╚██╗ ██╔╝    ██╔═══██╗██║   ██║██╔════╝██╔════╝╚══██╔══╝██╔════╝
+#  ██║  ██║███████║██║██║   ╚████╔╝     ██║   ██║██║   ██║█████╗  ███████╗   ██║   ███████╗
+#  ██║  ██║██╔══██║██║██║    ╚██╔╝      ██║▄▄ ██║██║   ██║██╔══╝  ╚════██║   ██║   ╚════██║
+#  ██████╔╝██║  ██║██║███████╗██║       ╚██████╔╝╚██████╔╝███████╗███████║   ██║   ███████║
+#  ╚═════╝ ╚═╝  ╚═╝╚═╝╚══════╝╚═╝        ╚══▀▀═╝  ╚═════╝ ╚══════╝╚══════╝   ╚═╝   ╚══════╝
+#
+# Build time: ${maven.build.timestamp}
+# Plugin ver: ${artifactId}-${version}
+#
+#
+
+quest:
+  # Generate random quest for each player?
+  per-player: false
+  # Complete quest when all goals are accomplished?
+  auto-complete: false
+  goals:
+    min-count:
+    max-count: 5
+    filter: ["!placeblocks"]
+
+  rewards:
+    min-count: 2
+    max-count: 2
+    # Force difficulty modifier when rewarding
+    force-modifier: false
+
+goal-settings:
+  killmobs:
+    zombie:
+      min-count: 5
+      max-count: 50
+      difficutly-mod: 10
+    skeleton:
+      min-count: 5
+      max-count: 30
+      difficutly-mod: 15
+    spider:
+      min-count: 5
+      max-count: 20
+      difficutly-mod: 15
+    blaze:
+      min-count: 5
+      max-count: 15
+      difficutly-mod: 30
+    phantom:
+      min-count: 5
+      max-count: 10
+      difficutly-mod: 30
+  destroyblocks|placeblocks:
+    stone:
+      min-count: 100
+      max-count: 200
+      difficulty-mod: 0
+    iron-ore:
+      min-count: 10
+      max-count: 20
+      difficulty-mod: 10
+    gold-ore:
+      min-count: 10
+      max-count: 20
+      difficulty-mod: 20
+    diamond-ore:
+      min-count: 10
+      max-count: 20
+      difficulty-mod: 50
+    ancient-debree:
+      min-count: 1
+      max-count: 10
+      difficulty-mod: 100
