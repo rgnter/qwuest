@@ -8,12 +8,13 @@ import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import xyz.rgnt.qwuest.api.QwuestAPI;
 import xyz.rgnt.qwuest.quests.Quest;
-import xyz.rgnt.qwuest.quests.shared.SharedQuestPart;
+import xyz.rgnt.qwuest.quests.goals.impl.GoalKillMob;
+import xyz.rgnt.qwuest.quests.shared.SharedCommon;
 
 /**
  * AGoal is abstract class representing single-goal that player can accomplish
  */
-public abstract class QuestGoal extends SharedQuestPart implements Listener {
+public abstract class QuestGoal extends SharedCommon implements Listener {
 
     @Setter(AccessLevel.PROTECTED)
     private int progressMin = 0, progressMax = 100;
@@ -87,7 +88,7 @@ public abstract class QuestGoal extends SharedQuestPart implements Listener {
      * Factory
      * @param <T> Goal type
      */
-    public static interface Factory<T extends QuestGoal> extends SharedQuestPart.Factory<T> {
+    public static interface Factory<T extends QuestGoal> extends SharedCommon.Factory<T> {
     }
 
 

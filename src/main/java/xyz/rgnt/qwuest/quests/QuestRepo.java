@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import xyz.rgnt.qwuest.quests.goals.QuestGoal;
 import xyz.rgnt.qwuest.quests.rewards.QuestReward;
 import xyz.rgnt.qwuest.quests.shared.CommonInfo;
-import xyz.rgnt.qwuest.quests.shared.SharedQuestPart;
+import xyz.rgnt.qwuest.quests.shared.SharedCommon;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -73,11 +73,11 @@ public class QuestRepo {
      * @param clazz Common class
      * @return Reward factory
      */
-    public static <T extends SharedQuestPart> @NotNull Optional<SharedQuestPart.Factory<T>> getAny(@NotNull Class<? extends T> clazz) {
+    public static <T extends SharedCommon> @NotNull Optional<SharedCommon.Factory<T>> getAny(@NotNull Class<? extends T> clazz) {
         if(goals.containsKey(clazz))
-            return Optional.ofNullable((SharedQuestPart.Factory<T>) goals.get(clazz));
+            return Optional.ofNullable((SharedCommon.Factory<T>) goals.get(clazz));
         if(rewards.containsKey(clazz))
-            return Optional.ofNullable((SharedQuestPart.Factory<T>)rewards.get(clazz));
+            return Optional.ofNullable((SharedCommon.Factory<T>)rewards.get(clazz));
         return Optional.empty();
     }
 

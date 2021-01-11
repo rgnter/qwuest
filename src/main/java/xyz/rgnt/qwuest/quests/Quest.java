@@ -9,7 +9,7 @@ import xyz.rgnt.qwuest.quests.excp.ProducerBadDataProvided;
 import xyz.rgnt.qwuest.quests.excp.QuestCreatorException;
 import xyz.rgnt.qwuest.quests.goals.QuestGoal;
 import xyz.rgnt.qwuest.quests.rewards.QuestReward;
-import xyz.rgnt.qwuest.quests.shared.SharedQuestPart;
+import xyz.rgnt.qwuest.quests.shared.SharedCommon;
 import xyz.rgnt.qwuest.util.BiFunc;
 
 import java.util.*;
@@ -83,10 +83,10 @@ public class Quest {
         }
 
 
-        private <T extends SharedQuestPart>@NotNull T makeByCommonFactory(@NotNull String identifier, @NotNull Class<? extends T> clazz,
-                                                                          @NotNull BiFunc<SharedQuestPart.Factory<T>, T,  T, ProducerBadDataProvided> func) throws QuestCreatorException {
+        private <T extends SharedCommon>@NotNull T makeByCommonFactory(@NotNull String identifier, @NotNull Class<? extends T> clazz,
+                                                                       @NotNull BiFunc<SharedCommon.Factory<T>, T,  T, ProducerBadDataProvided> func) throws QuestCreatorException {
             // get goal optFactory
-            Optional<SharedQuestPart.Factory<T>> optFactory = QuestRepo.getAny(clazz);
+            Optional<SharedCommon.Factory<T>> optFactory = QuestRepo.getAny(clazz);
             if (optFactory.isEmpty())
                 throw new QuestCreatorException("Couldn't get factory for: " + clazz.getName() + " (Cause: Specified factory doesn't exist and/or is not registered)");
             var factory = optFactory.get();
