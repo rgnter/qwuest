@@ -76,7 +76,9 @@ public class QuestManager {
         }
 
         try {
-            Quest.Creator creator = Quest.Creator.createQuest("test0", UUID.randomUUID()).withGoal("goal0", GoalKillMob.class, FriendlyData.fromEmptyYaml());
+            Quest quest = Quest.Creator.createQuest("test0", UUID.randomUUID())
+                    .withGoal("goal0", GoalKillMob.class, FriendlyData.fromEmptyYaml())
+                    .link();
         } catch (QuestCreatorException e) {
             System.out.println(e);
             e.printStackTrace();

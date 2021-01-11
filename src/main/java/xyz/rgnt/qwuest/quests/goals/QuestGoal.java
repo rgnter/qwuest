@@ -31,8 +31,8 @@ public abstract class QuestGoal extends SharedCommon implements Listener {
     private double difficultyMod = 1.0d;
 
 
-    public QuestGoal(@NotNull Quest quest, @NotNull String identifier) {
-        super(quest, identifier);
+    public QuestGoal( @NotNull String identifier) {
+        super(identifier);
     }
 
     /**

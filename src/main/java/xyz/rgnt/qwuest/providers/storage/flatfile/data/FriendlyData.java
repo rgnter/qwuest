@@ -965,6 +965,9 @@ public abstract class FriendlyData {
 
         @Override
         public @NotNull Set<String> getKeys(@NotNull String path) {
+            if(path.isEmpty() || path.isBlank())
+                return getKeys();
+
             ConfigurationSection section = yamlData.getConfigurationSection(path);
             if (section == null)
                 return Collections.emptySet();

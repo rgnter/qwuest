@@ -11,8 +11,8 @@ import xyz.rgnt.qwuest.quests.shared.SharedCommon;
 public abstract class QuestReward extends SharedCommon {
 
 
-    public QuestReward(@NotNull Quest quest, @NotNull String identifier) {
-        super(quest, identifier);
+    public QuestReward(@NotNull String identifier) {
+        super(identifier);
     }
 
     /**

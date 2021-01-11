@@ -28,7 +28,7 @@ public class QuestRepo {
     public static boolean registerGoal(@NotNull Class<? extends QuestGoal> goalClass, @NotNull QuestGoal.Factory<? extends QuestGoal> goalFactory) {
         var info = goalClass.getDeclaredAnnotation(CommonInfo.class);
         if(info == null) {
-            log.warn("Tried to register Goal '{}' that doesn't have GoalInfo annotation", goalClass.getName());
+            log.warn("Tried to register Goal '{}' that doesn't have CommonInfo annotation", goalClass.getName());
             return false;
         }
         if(goals.containsKey(goalClass))
@@ -52,11 +52,20 @@ public class QuestRepo {
 
     /**
      * Registers reward factory
-     * @param goalClass   Reward class
+     * @param rewardClass   Reward class
      * @param goalFactory Reward factory
      */
-    public static void registerReward(@NotNull Class<? extends QuestReward> goalClass, @NotNull QuestReward.Factory<? extends QuestReward> goalFactory) {
-        rewards.put((Class<QuestReward>)goalClass, (QuestReward.Factory<QuestReward>)goalFactory);
+    public static boolean registerReward(@NotNull Class<? extends QuestReward> rewardClass, @NotNull QuestReward.Factory<? extends QuestReward> goalFactory) {
+        var info = rewardClass.getDeclaredAnnotation(CommonInfo.class);
+        if(info == null) {
+            log.warn("Tried to register Reward '{}' that doesn't have CommonInfo annotation", rewardClass.getName());
+            return false;
+        }
+        if(goals.containsKey(rewardClass))
+            log.warn("Registering reward '{}' that overrides existing goal", rewardClass.getName());
+
+        rewards.put((Class<QuestReward>)rewardClass, (QuestReward.Factory<QuestReward>)goalFactory);
+        return true;
     }
 
     /**
@@ -69,9 +78,9 @@ public class QuestRepo {
     }
 
     /**
-     * Gets common factory
+     * Gets registered SharedCommon
      * @param clazz Common class
-     * @return Reward factory
+     * @return Shared common
      */
     public static <T extends SharedCommon> @NotNull Optional<SharedCommon.Factory<T>> getAny(@NotNull Class<? extends T> clazz) {
         if(goals.containsKey(clazz))

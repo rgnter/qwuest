@@ -13,10 +13,10 @@ import xyz.rgnt.qwuest.quests.shared.factory.CommonFactory;
 /**
  * Class providing shared common for Goals and Rewards
  */
-public class SharedCommon {
+public abstract class SharedCommon {
 
     @Getter(AccessLevel.PROTECTED)
-    private @Nullable Quest quest;
+    private Quest quest;
 
     /**
      * Used for identifying goal in quest
@@ -24,34 +24,87 @@ public class SharedCommon {
     @Getter
     private String identifier;
 
-    @Getter @Setter(AccessLevel.PROTECTED)
+    @Getter
+    @Setter(AccessLevel.PROTECTED)
     private boolean isActive;
-
 
     /**
      * Default shared constructor
-     * @param quest      Owning quest
+     *
      * @param identifier Identifier for debug purposes
      */
-    public SharedCommon(@Nullable Quest quest, @NotNull String identifier) {
-        this.quest = quest;
+    public SharedCommon(@NotNull String identifier) {
         this.identifier = identifier;
     }
 
     /**
+     * Checks if is bound to quest
+     * @return Boolean
+     */
+    public boolean isBound() {
+        return quest != null;
+    }
+
+    /**
+     * Binds quest
+     * @param quest Quest to bind
+     * @return Whether bind was successful or not
+     */
+    public boolean bind(@NotNull Quest quest) {
+        if (!isBound()) {
+            this.quest = quest;
+            onBind();
+            return true;
+        } else if (onRebind(quest)) {
+            this.quest = quest;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Unbinds quest
+     * @return Whether unbind was successful or not
+     */
+    public boolean unbind() {
+        if (isBound()) {
+            this.quest = null;
+            onUnbind();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Called when rebound to another quest
+     * @param another Rebound quest
+     */
+    protected abstract boolean onRebind(@NotNull Quest another);
+
+    /**
+     * Called when bound to new quest
+     */
+    protected abstract boolean onBind();
+
+    /**
+     * Called when quest gets unbound
+     */
+    protected abstract boolean onUnbind();
+
+
+    /**
      * @return Goal specifier
      */
-    public  @NotNull String getSpecifier() {
+    public @NotNull String getSpecifier() {
         return getClass().getDeclaredAnnotation(CommonInfo.class).specifier();
     }
 
     /**
      * @return Goal friendly name
      */
-    public  @NotNull String getFriendlyName() {
+    public @NotNull String getFriendlyName() {
         return getClass().getDeclaredAnnotation(CommonInfo.class).friendlyName();
     }
-
 
 
     public static interface Factory<T extends SharedCommon> extends CommonFactory<T, FriendlyData, T, ProducerBadDataProvided> {

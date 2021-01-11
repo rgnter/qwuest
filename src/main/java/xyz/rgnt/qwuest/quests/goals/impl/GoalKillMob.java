@@ -25,8 +25,8 @@ public class GoalKillMob extends QuestGoal {
     @Getter
     private int targetedAmount;
 
-    public GoalKillMob(@NotNull Quest quest, @NotNull String identifier) {
-        super(quest, identifier);
+    public GoalKillMob( @NotNull String identifier) {
+        super(identifier);
     }
 
     @EventHandler
@@ -39,6 +39,25 @@ public class GoalKillMob extends QuestGoal {
             if(killer.getUniqueId().equals(getQuest().getOwner()))
                 currentAmount++;
         }
+    }
+
+    @Override
+    protected boolean onRebind(@NotNull Quest another) {
+        this.currentAmount = 0;
+        return true;
+    }
+
+    @Override
+    protected boolean onBind() {
+        registerAsListener();
+        this.currentAmount = 0;
+        return false;
+    }
+
+    @Override
+    protected boolean onUnbind() {
+        registerAsListener();
+        return false;
     }
 
     @Override
@@ -69,7 +88,7 @@ public class GoalKillMob extends QuestGoal {
 
         @Override
         public @NotNull GoalKillMob produceRandom(@NotNull GoalKillMob goal, @NotNull FriendlyData settings) throws ProducerBadDataProvided {
-            Set<String> entityNames = settings.getKeys("");
+            Set<String> entityNames = settings.getKeys();
 
             return null;
         }

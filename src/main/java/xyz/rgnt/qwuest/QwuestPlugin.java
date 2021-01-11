@@ -48,8 +48,6 @@ public class QwuestPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         super.onEnable();
-        System.out.println(ProgressStatics.getProgressBar(64, 128));
-        System.out.println(ProgressStatics.getProgressBar(2, 10));
 
         timer.start();
         log.info("Initializing...");

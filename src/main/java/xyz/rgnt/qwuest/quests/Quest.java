@@ -75,8 +75,8 @@ public class Quest {
         // hehe docs
         private @Nullable Object makeCommonInstance(Class<?> clazz, @NotNull String identifier) {
             try {
-                var constructor = clazz.getConstructor(Quest.class, String.class);
-                return constructor.newInstance(this.toCreate, identifier);
+                var constructor = clazz.getConstructor(String.class);
+                return constructor.newInstance(identifier);
             } catch (Exception ignored) {
             }
             return null;
@@ -159,6 +159,18 @@ public class Quest {
         public @NotNull Quest.Creator withReward(@NotNull String goalIdentifier, @NotNull Class<? extends QuestReward> goalClass, @NotNull FriendlyData data) throws QuestCreatorException {
             this.toCreate.rewards.add(makeByCommonFactory(goalIdentifier, goalClass, (factory, goal) -> factory.produce(goal, data)));
             return this;
+        }
+
+
+        public @NotNull Quest link() {
+            this.toCreate.goals.forEach(goal -> {
+                goal.bind(this.toCreate);
+            });
+            this.toCreate.rewards.forEach(reward -> {
+                reward.bind(this.toCreate);
+            });
+
+            return toCreate;
         }
 
     }
