@@ -13,14 +13,16 @@
 #
 
 quest:
+  min-count: 1
+  max-count: 1
   # Generate random quest for each player?
   per-player: false
   # Complete quest when all goals are accomplished?
   auto-complete: false
   goals:
-    min-count:
-    max-count: 5
-    filter: ["!placeblocks"]
+    min-count: 2
+    max-count: 4
+    filter: ["placeblocks"]
 
   rewards:
     min-count: 2
@@ -29,7 +31,7 @@ quest:
     force-modifier: false
 
 goal-settings:
-  killmobs:
+  killmob:
     zombie:
       min-count: 5
       max-count: 50

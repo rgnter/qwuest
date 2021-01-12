@@ -2,22 +2,14 @@ package xyz.rgnt.qwuest.quests.goals;
 
 import lombok.AccessLevel;
 import lombok.Setter;
-import org.bukkit.Bukkit;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
-import xyz.rgnt.qwuest.api.QwuestAPI;
-import xyz.rgnt.qwuest.quests.Quest;
-import xyz.rgnt.qwuest.quests.goals.impl.GoalKillMob;
 import xyz.rgnt.qwuest.quests.shared.SharedCommon;
 
 /**
  * AGoal is abstract class representing single-goal that player can accomplish
  */
 public abstract class QuestGoal extends SharedCommon implements Listener {
-
-    @Setter(AccessLevel.PROTECTED)
-    private int progressMin = 0, progressMax = 100;
 
     @Setter(AccessLevel.PROTECTED)
     private boolean accomplished = false;
@@ -42,19 +34,10 @@ public abstract class QuestGoal extends SharedCommon implements Listener {
         return this.accomplished;
     }
 
-
     /**
-     * @return Progress min value
+     * Runs every tick
      */
-    public int getProgressMin() {
-        return this.progressMin;
-    }
-    /**
-     * @return Progress max value
-     */
-    public int getProgressMax() {
-        return this.progressMax;
-    }
+    public void tick() {}
 
     /**
      * @return Progress bar
@@ -62,19 +45,11 @@ public abstract class QuestGoal extends SharedCommon implements Listener {
     public abstract @NotNull String getProgressBar();
 
     /**
-     * Sexier way of registering listeners
+     * Creates copy of a Goal
+     * @param rearm Rearm the goal?
+     * @return Copy
      */
-    public void registerAsListener() {
-        Bukkit.getPluginManager().registerEvents( this, QwuestAPI.getInstance().getPlugin());
-    }
-
-    /**
-     * Sexier way of unregistering listeners
-     */
-    public void unregisterAsListener() {
-        HandlerList.unregisterAll(this);
-    }
-
+    public abstract @NotNull QuestGoal makeNew();
 
     /**
      * @return Difficulty modifier of this goal. Usually calculated with complicated formulae.

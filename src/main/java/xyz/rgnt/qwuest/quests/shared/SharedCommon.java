@@ -10,6 +10,8 @@ import xyz.rgnt.qwuest.quests.Quest;
 import xyz.rgnt.qwuest.quests.excp.ProducerBadDataProvided;
 import xyz.rgnt.qwuest.quests.shared.factory.CommonFactory;
 
+import java.util.UUID;
+
 /**
  * Class providing shared common for Goals and Rewards
  */
@@ -55,8 +57,9 @@ public abstract class SharedCommon {
             this.quest = quest;
             onBind();
             return true;
-        } else if (onRebind(quest)) {
+        } else if (unbind()) {
             this.quest = quest;
+            onBind();
             return true;
         }
         return false;
@@ -68,18 +71,12 @@ public abstract class SharedCommon {
      */
     public boolean unbind() {
         if (isBound()) {
-            this.quest = null;
             onUnbind();
+            this.quest = null;
             return true;
         }
         return false;
     }
-
-    /**
-     * Called when rebound to another quest
-     * @param another Rebound quest
-     */
-    protected abstract boolean onRebind(@NotNull Quest another);
 
     /**
      * Called when bound to new quest

@@ -8,15 +8,14 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.jetbrains.annotations.NotNull;
 import xyz.rgnt.qwuest.providers.statics.ProgressStatics;
 import xyz.rgnt.qwuest.providers.storage.flatfile.data.FriendlyData;
-import xyz.rgnt.qwuest.quests.Quest;
 import xyz.rgnt.qwuest.quests.excp.ProducerBadDataProvided;
 import xyz.rgnt.qwuest.quests.goals.QuestGoal;
 import xyz.rgnt.qwuest.quests.shared.CommonInfo;
 
 import java.util.Set;
 
-@CommonInfo(specifier = "killmob", friendlyName = "Kill Mobs")
-public class GoalKillMob extends QuestGoal {
+@CommonInfo(specifier = "killmobs", friendlyName = "Kill Mobs")
+public class GoalKillMobs extends QuestGoal {
 
     @Getter
     private EntityType targetedEntity;
@@ -25,9 +24,17 @@ public class GoalKillMob extends QuestGoal {
     @Getter
     private int targetedAmount;
 
-    public GoalKillMob( @NotNull String identifier) {
+    public GoalKillMobs(@NotNull String identifier, EntityType targetedEntity, int currentAmount, int targetedAmount) {
+        super(identifier);
+        this.targetedEntity = targetedEntity;
+        this.currentAmount = currentAmount;
+        this.targetedAmount = targetedAmount;
+    }
+
+    public GoalKillMobs(@NotNull String identifier) {
         super(identifier);
     }
+
 
     @EventHandler
     public void onEntityKill(EntityDeathEvent event) {
@@ -42,22 +49,19 @@ public class GoalKillMob extends QuestGoal {
     }
 
     @Override
-    protected boolean onRebind(@NotNull Quest another) {
+    protected boolean onBind() {
         this.currentAmount = 0;
         return true;
     }
 
     @Override
-    protected boolean onBind() {
-        registerAsListener();
-        this.currentAmount = 0;
-        return false;
+    protected boolean onUnbind() {
+        return true;
     }
 
     @Override
-    protected boolean onUnbind() {
-        registerAsListener();
-        return false;
+    public @NotNull QuestGoal makeNew() {
+        return new GoalKillMobs(getIdentifier(), getTargetedEntity(),  0, getTargetedAmount());
     }
 
     @Override
@@ -65,9 +69,9 @@ public class GoalKillMob extends QuestGoal {
         return ProgressStatics.getProgressBar(currentAmount, targetedAmount);
     }
 
-    public static class Factory implements QuestGoal.Factory<GoalKillMob> {
+    public static class Factory implements QuestGoal.Factory<GoalKillMobs> {
         @Override
-        public @NotNull GoalKillMob produce(@NotNull GoalKillMob goal, @NotNull FriendlyData data) throws ProducerBadDataProvided {
+        public @NotNull GoalKillMobs produce(@NotNull GoalKillMobs goal, @NotNull FriendlyData data) throws ProducerBadDataProvided {
             String entityName = data.getString("target");
             if(entityName == null)
                 throw new ProducerBadDataProvided("Missing entity target");
@@ -78,7 +82,7 @@ public class GoalKillMob extends QuestGoal {
             }
 
             if(data.isSet("amount"))
-                goal.currentAmount  = data.getInt("amount", 0);
+                goal.currentAmount = data.getInt("amount", 0);
             else
                 throw new ProducerBadDataProvided("Missing target amount");
             if(goal.currentAmount <= 0)
@@ -87,7 +91,7 @@ public class GoalKillMob extends QuestGoal {
         }
 
         @Override
-        public @NotNull GoalKillMob produceRandom(@NotNull GoalKillMob goal, @NotNull FriendlyData settings) throws ProducerBadDataProvided {
+        public @NotNull GoalKillMobs produceRandom(@NotNull GoalKillMobs goal, @NotNull FriendlyData settings) throws ProducerBadDataProvided {
             Set<String> entityNames = settings.getKeys();
 
             return null;

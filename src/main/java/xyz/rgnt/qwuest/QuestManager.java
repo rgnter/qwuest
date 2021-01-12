@@ -9,7 +9,7 @@ import xyz.rgnt.qwuest.providers.storage.flatfile.data.FriendlyData;
 import xyz.rgnt.qwuest.quests.Quest;
 import xyz.rgnt.qwuest.quests.QuestRepo;
 import xyz.rgnt.qwuest.quests.excp.QuestCreatorException;
-import xyz.rgnt.qwuest.quests.goals.impl.GoalKillMob;
+import xyz.rgnt.qwuest.quests.goals.impl.GoalKillMobs;
 
 import java.util.UUID;
 
@@ -41,7 +41,7 @@ public class QuestManager {
      * Initializes quest manager
      */
     public void initialize() {
-        QuestRepo.registerGoal(GoalKillMob.class, new GoalKillMob.Factory());
+        QuestRepo.registerGoal(GoalKillMobs.class, new GoalKillMobs.Factory());
 
         try {
             try {
@@ -76,9 +76,11 @@ public class QuestManager {
         }
 
         try {
-            Quest quest = Quest.Creator.createQuest("test0", UUID.randomUUID())
-                    .withGoal("goal0", GoalKillMob.class, FriendlyData.fromEmptyYaml())
-                    .link();
+            Quest quest = Quest.Creator.createQuest("test0")
+                    .forPlayer(UUID.randomUUID())
+                    .withGoal("goal0", GoalKillMobs.class, FriendlyData.fromEmptyYaml())
+                    .withGoal("goal0", GoalKillMobs.class, FriendlyData.fromEmptyYaml())
+                    .build();
         } catch (QuestCreatorException e) {
             System.out.println(e);
             e.printStackTrace();

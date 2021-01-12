@@ -19,10 +19,10 @@ trails:
       quest-0:
         goals:
           goal0:
-            type: killmobs
+            type: killmob
             data: '{amount:10,target:"zombie"}'
           goal1:
-            type: killmobs
+            type: killmob
             data: '{amount:5,target:"skeleton"}'
         rewards:
           reward0:
@@ -37,7 +37,7 @@ trails:
       quest-0:
         goals:
           goal0:
-            type: destroyblocks
+            type: destroyblock
             data: '{amount:10,target:"stone"}'
         rewards:
           reward1:

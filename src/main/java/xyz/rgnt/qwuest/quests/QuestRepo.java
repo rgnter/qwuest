@@ -7,10 +7,10 @@ import xyz.rgnt.qwuest.quests.rewards.QuestReward;
 import xyz.rgnt.qwuest.quests.shared.CommonInfo;
 import xyz.rgnt.qwuest.quests.shared.SharedCommon;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Log4j2
 public class QuestRepo {
@@ -98,10 +98,51 @@ public class QuestRepo {
     }
 
     /**
+     * @return Map of Goals that matched predicate
+     */
+    public static @NotNull Map<Class<QuestGoal>, QuestGoal.Factory<QuestGoal>> getGoals(@NotNull Predicate<Class<QuestGoal>> predicate) {
+        final Map<Class<QuestGoal>, QuestGoal.Factory<QuestGoal>> matched = new HashMap<>();
+        goals.forEach((className, factory) -> {
+            if(predicate.test(className))
+                matched.put(className, factory);
+        });
+        return matched;
+    }
+
+    /**
+     * @return Set of goal specifiers
+     */
+    public static @NotNull Set<String> getGoalSpecifiers() {
+        return goals.keySet().stream().map((questClass) -> questClass.getDeclaredAnnotation(CommonInfo.class))
+                .filter(Objects::nonNull).map(CommonInfo::specifier).collect(Collectors.toSet());
+    }
+
+
+    /**
      * @return Immutable map of Rewards
      */
     public static @NotNull Map<Class<QuestReward>, QuestReward.Factory<QuestReward>> getRewards() {
         return Collections.unmodifiableMap(rewards);
+    }
+
+    /**
+     * @return Set of reward specifiers
+     */
+    public static @NotNull Set<String> getRewardSpecifiers() {
+        return rewards.keySet().stream().map((questClass) -> questClass.getDeclaredAnnotation(CommonInfo.class))
+                .filter(Objects::nonNull).map(CommonInfo::specifier).collect(Collectors.toSet());
+    }
+
+    /**
+     * @return Map of Goals that matched predicate
+     */
+    public static @NotNull Map<Class<QuestReward>, QuestReward.Factory<QuestReward>> getRewards(@NotNull Predicate<Class<QuestReward>> predicate) {
+        final Map<Class<QuestReward>, QuestReward.Factory<QuestReward>> matched = new HashMap<>();
+        rewards.forEach((className, factory) -> {
+            if(predicate.test(className))
+                matched.put(className, factory);
+        });
+        return matched;
     }
 
 

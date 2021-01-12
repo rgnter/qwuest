@@ -17,9 +17,13 @@ public abstract class QuestReward extends SharedCommon {
 
     /**
      * Redeems reward to player
-     * @param player Player
      */
-    public abstract void redeem(@NotNull Player player);
+    public abstract void redeem();
+
+    /**
+     * Creates new reward with same parameters
+     */
+    public abstract void makeNew();
 
     /**
      * Factory
